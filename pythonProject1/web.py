@@ -17,15 +17,17 @@ st.title("My Todo App")
 st.subheader("This is my todo app")
 st.write("This app is to increase your productivity")
 
+# Create a copy of the todos list to iterate over (to avoid modifying the list while iterating)
+todos_copy = todos.copy()
+
 # Iterate through the todos and create checkboxes
-for index, todo in enumerate(todos):
+for index, todo in enumerate(todos_copy):
     checkbox = st.checkbox(todo, key=todo)  # Display each todo as a checkbox
 
     # If checkbox is checked, remove it from the todos list
     if checkbox:
-        todos.pop(index)
-        functions.write_todos(todos)
-        st.rerun()  # Trigger a rerun of the app to reflect changes
+        todos.remove(todo)  # Remove the completed todo
+        functions.write_todos(todos)  # Save the updated list
 
 # Input field to add a new to-do
 new_todo = st.text_input("New Todo", placeholder="Add new todo...", on_change=add_todo, key='new_todo')
