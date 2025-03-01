@@ -1,25 +1,28 @@
 import os
 
-# Define the file path
-filepath = 'todos.txt'
+FILEPATH = "todos.txt"
 
-
-def get_todos():
-    # Check if the file exists, if not create it
+# Ensure that the file exists, and if not, create it
+def ensure_file_exists(filepath=FILEPATH):
     if not os.path.exists(filepath):
-        with open(filepath, 'w') as file_local:
-            file_local.write("")  # Create an empty file initially
+        with open(filepath, 'w') as file:
+            file.write("")  # Create an empty file if it doesn't exist
 
-    # Read todos from the file
+# Function to read the todos from the file
+def get_todos(filepath=FILEPATH):
+    ensure_file_exists(filepath)  # Ensure the file exists before reading
     with open(filepath, 'r') as file_local:
-        todos = file_local.readlines()
+        todos_local = file_local.readlines()
+    return [todo.strip() for todo in todos_local]  # Strip newlines from each todo
 
-    # Clean up newlines in each todo item
-    return [todo.strip() for todo in todos]
+# Function to write the todos to the file
+def write_todos(todos_arg, filepath=FILEPATH):
+    ensure_file_exists(filepath)  # Ensure the file exists before writing
+    with open(filepath, 'w') as file:
+        file.writelines([todo + '\n' for todo in todos_arg])  # Add newline after each todo
 
-
-def write_todos(todos):
-    # Write todos to the file
-    with open(filepath, 'w') as file_local:
-        for todo in todos:
-            file_local.write(todo + "\n")
+# This block only runs if the script is executed directly
+if __name__ == "__main__":
+    print("Hello")
+    todos = get_todos()
+    print("Todos:", todos)
